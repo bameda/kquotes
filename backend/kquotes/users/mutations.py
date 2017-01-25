@@ -40,18 +40,44 @@ from .nodes import UserNode
 
 
 class LoginUser(relay.ClientIDMutation):
+    """ Mutation to authenticate a user.
+
+    Example
+
+        Operation:
+            mutation loginUser($input: LoginUserInput!) {
+              loginUser(input: $input){
+                ok,
+                user {
+                  username
+                  firstName
+                  lastName
+                  email
+                  token
+                }
+              }
+            }
+
+        Vars:
+
+            {
+              "input": {
+                "username": "admin",
+                "password": "123123"
+              }
+            }
+    """
     ok = graphene.Boolean()
     user = graphene.Field(UserNode)
 
     class Input:
         username = graphene.String(required=True)
-        email = graphene.String()
         password = graphene.String(required=True)
 
     @classmethod
     def mutate_and_get_payload(cls, input, context, info):
         params = {
-            'username': input.get('email') or input.get('username'),
+            'username': input.get('username'),
             'password': input.get('password')
         }
 
