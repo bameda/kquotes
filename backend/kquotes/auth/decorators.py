@@ -7,7 +7,6 @@ from .exceptions import LoginNeeded
 def login_required(function):
     @wraps(function)
     def decorator(*args, **kwargs):
-        import ipdb; ipdb.set_trace()
         request = next((arg for arg in args if isinstance(arg, HttpRequest)), None)
 
         if not request or not request.user.is_authenticated():
